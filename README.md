@@ -18,7 +18,11 @@
   Program Studi Teknik Informatika, Universitas Trunojoyo Madura.
 </p>
 
+<img align="right" width=50px height=50px alt="side_sticker" src="https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExd2M0NDFsbzJpaWQ3OGhlZWJ1ODYydXQycThyc2hlZHIwM2dhNW9zMyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/Ut9IfYd8U1C0CNQi76/giphy.gif" />
+
+
 <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ"><img src="https://user-images.githubusercontent.com/73097560/115834477-dbab4500-a447-11eb-908a-139a6edaec5c.gif"></a>
+
 
 ## 📖 Deskripsi Proyek
 
