@@ -18,26 +18,26 @@
   Program Studi Teknik Informatika, Universitas Trunojoyo Madura.
 </p>
 
-<img align="left" width="80px" height="80px" alt="side_sticker" src="https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExdXUzZHF4Y3R6dzc0b3N6YXozdzRqa3B5ZXZhNmNxcG5sdGdybThxbSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/7XN0rYyF9d4m1YqHqE/giphy.gif" />
+<img align="left" width="100px" height="100px" alt="side_sticker" src="https://drive.google.com/uc?export=view&id=16HBYB2UYM8a-zMUEFwXnwi4amxjW-Oix"/>
 
-<a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ"><img src="https://user-images.githubusercontent.com/73097560/115834477-dbab4500-a447-11eb-908a-139a6edaec5c.gif"></a>
+<img src="https://user-images.githubusercontent.com/73097560/115834477-dbab4500-a447-11eb-908a-139a6edaec5c.gif"></a>
 
 
-## 📖 Deskripsi Proyek
+## 📖 Deskripsi Project
 
-TrunodjoyoClassroom adalah platform e-learning responsif yang dirancang untuk mensimulasikan lingkungan kelas virtual dengan manajemen materi yang terstruktur dan interaktif. Dibangun menggunakan arsitektur MVC pada Laravel, aplikasi ini menawarkan pengalaman belajar yang rapi melalui sistem Lembar Persiapan Perkuliahan (LPP) dan fitur gamifikasi untuk memotivasi mahasiswa.
+Trunodjoyo Classroom adalah platform e-learning responsif yang dirancang untuk mensimulasikan lingkungan kelas virtual dengan manajemen materi yang terstruktur dan interaktif. Dibangun menggunakan arsitektur MVC pada Laravel, aplikasi ini menawarkan pengalaman belajar yang rapi melalui sistem Lembar Persiapan Perkuliahan (LPP) dan fitur gamifikasi untuk memotivasi mahasiswa.
 
-<a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ"><img src="https://user-images.githubusercontent.com/73097560/115834477-dbab4500-a447-11eb-908a-139a6edaec5c.gif"></a>
+<img src="https://user-images.githubusercontent.com/73097560/115834477-dbab4500-a447-11eb-908a-139a6edaec5c.gif"></a>
 
 ## ✨ Fitur Unggulan
 
-- 📂 **Modul LPP (Lembar Persiapan Perkuliahan):** Materi dan tugas dikelompokkan secara terstruktur per pertemuan, bukan ditumpuk di satu beranda utama.
-- 🎮 **Sistem Gamifikasi (EXP & Leveling):** Mahasiswa mendapatkan poin EXP saat mengumpulkan tugas tepat waktu. Poin ini secara dinamis mengubah desain *border* foto profil mereka menggunakan indikator level.
-- 💬 **Forum Diskusi Terstruktur (Threads):** Ruang tanya jawab interaktif yang diikat secara spesifik pada masing-masing modul LPP/Materi.
-- 🔔 **Notifikasi In-App Realtime:** Pemberitahuan internal (lonceng notifikasi) menggunakan *Database Notifications* Laravel untuk info tugas atau nilai baru.
-- 🛡️ **Keamanan Data (Soft Deletes):** Mencegah kehilangan data vital (seperti kelas, materi, dan tugas) akibat ketidaksengajaan penghapusan.
+- **Modul LPP (Lembar Persiapan Perkuliahan):** Materi dan tugas dikelompokkan secara terstruktur per pertemuan, bukan ditumpuk di satu beranda utama.
+- **Sistem Gamifikasi (EXP & Leveling):** Mahasiswa mendapatkan poin EXP saat mengumpulkan tugas tepat waktu. Poin ini secara dinamis mengubah desain *border* foto profil mereka menggunakan indikator level.
+- **Forum Diskusi Terstruktur (Threads):** Ruang tanya jawab interaktif yang diikat secara spesifik pada masing-masing modul LPP/Materi.
+- **Notifikasi In-App Realtime:** Pemberitahuan internal (lonceng notifikasi) menggunakan *Database Notifications* Laravel untuk info tugas atau nilai baru.
+- **Keamanan Data (Soft Deletes):** Mencegah kehilangan data vital (seperti kelas, materi, dan tugas) akibat ketidaksengajaan penghapusan.
 
-<a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ"><img src="https://user-images.githubusercontent.com/73097560/115834477-dbab4500-a447-11eb-908a-139a6edaec5c.gif"></a>
+<img src="https://user-images.githubusercontent.com/73097560/115834477-dbab4500-a447-11eb-908a-139a6edaec5c.gif"></a>
 
 ## 🛠️ Teknologi & Tema UI
 
@@ -48,11 +48,11 @@ TrunodjoyoClassroom adalah platform e-learning responsif yang dirancang untuk me
 * **Styling:** CSS / Tailwind CSS
 
 ### Tema Visual: **Dark & Gold Premium**
-* 🌑 *Background:* Midnight Navy (`#0F172A`) & Dark Slate (`#1E293B`)
-* ⚪ *Text:* White (`#FFFFFF`) & Slate (`#94A3B8`)
-* 🟡 *Accent:* Vibrant Gold (`#FBBF24`)
+*  *Background:* Midnight Navy (`#0F172A`) & Dark Slate (`#1E293B`)
+*  *Text:* White (`#FFFFFF`) & Slate (`#94A3B8`)
+*  *Accent:* Vibrant Gold (`#FBBF24`)
 
-<a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ"><img src="https://user-images.githubusercontent.com/73097560/115834477-dbab4500-a447-11eb-908a-139a6edaec5c.gif"></a>
+<img src="https://user-images.githubusercontent.com/73097560/115834477-dbab4500-a447-11eb-908a-139a6edaec5c.gif"></a>
 
 ## 👨‍💻 Tim Pengembang & Pembagian Tugas
 
@@ -66,7 +66,7 @@ Proyek ini dikembangkan secara kolaboratif oleh tim yang terdiri dari 4 anggota:
     * Merancang *layout* antarmuka utama (Navbar dinamis & Sidebar navigasi).
     * Menerapkan palet warna *Dark & Gold* pada seluruh sistem.
     * Membangun tampilan *Dashboard* Beranda dan rekap Daftar Tugas.
-3.  **Idan (Autentikasi & Manajemen Kelas)**
+3.  **Zaidan (Autentikasi & Manajemen Kelas)**
     * Menyiapkan sistem Login/Register (Breeze) dan pembatasan hak akses (*Role*).
     * Membangun fitur Dosen membuat kelas (Generate Code) dan Mahasiswa bergabung ke kelas.
     * Mengelola CRUD untuk pembuatan struktur LPP/Pertemuan.
@@ -75,9 +75,9 @@ Proyek ini dikembangkan secara kolaboratif oleh tim yang terdiri dari 4 anggota:
     * Merakit tampilan detail LPP (menggabungkan materi dan tugas dalam satu halaman).
     * Membangun sistem interaksi *Thread* Diskusi dan Notifikasi sistem.
 
-<a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ"><img src="https://user-images.githubusercontent.com/73097560/115834477-dbab4500-a447-11eb-908a-139a6edaec5c.gif"></a>
+<img src="https://user-images.githubusercontent.com/73097560/115834477-dbab4500-a447-11eb-908a-139a6edaec5c.gif"></a>
 
-## 🚀 Panduan Instalasi (Local Development)
+## Panduan Instalasi (Local Development)
 
 Bagi anggota tim yang ingin menjalankan *project* ini di lokal masing-masing, ikuti langkah berikut:
 
@@ -121,5 +121,5 @@ Bagi anggota tim yang ingin menjalankan *project* ini di lokal masing-masing, ik
 
 ---
 <p align="center">
-  Dibuat dengan ☕ dan 💻 oleh Mahasiswa Teknik Informatika UTM - 2026
+  Dibuat dengan oleh Mahasiswa Teknik Informatika UTM - 2026
 </p>
