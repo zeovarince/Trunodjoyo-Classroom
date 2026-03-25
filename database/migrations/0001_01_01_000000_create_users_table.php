@@ -19,6 +19,9 @@ return new class extends Migration
             $table->string('password');
             $table->rememberToken();
             $table->timestamps();
+            $table->string('npm')->unique()->nullable()->comment('NPM untuk Mahasiswa, NIP untuk Dosen');
+            $table->enum('role', ['mahasiswa', 'dosen'])->default('mahasiswa');
+            $table->integer('exp')->default(0)->comment('EXP');
         });
 
         Schema::create('password_reset_tokens', function (Blueprint $table) {
