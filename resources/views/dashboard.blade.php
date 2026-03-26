@@ -44,7 +44,9 @@
 
         <div class="px-5 pb-5 mt-auto">
             <button class="w-full py-2 bg-slate-700 group-hover:bg-amber-400 group-hover:text-slate-900 rounded-lg text-sm font-bold transition-colors">
-                Masuk Kelas
+                <a href="/kelas/1" >
+    Masuk Kelas
+</a>
             </button>
         </div>
     </div>
@@ -78,7 +80,7 @@
         </div>
         <div class="px-5 pb-5 mt-auto">
             <button class="w-full py-2 bg-slate-700 group-hover:bg-amber-400 group-hover:text-slate-900 rounded-lg text-sm font-bold transition-colors">
-                Masuk Kelas
+    Masuk Kelas
             </button>
         </div>
     </div>
