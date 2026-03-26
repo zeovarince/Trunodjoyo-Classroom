@@ -22,6 +22,7 @@ return new class extends Migration
             $table->string('npm')->unique()->nullable()->comment('NPM untuk Mahasiswa, NIP untuk Dosen');
             $table->enum('role', ['mahasiswa', 'dosen'])->default('mahasiswa');
             $table->integer('exp')->default(0)->comment('EXP');
+            $table->string('avatar')->nullable()->comment('foto profil');
         });
 
         Schema::create('password_reset_tokens', function (Blueprint $table) {

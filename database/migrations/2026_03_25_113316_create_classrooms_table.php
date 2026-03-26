@@ -16,6 +16,7 @@ return new class extends Migration
             $table->foreignId('dosen_id')->constrained('users')->cascadeOnDelete();
             $table->string('name');
             $table->string('generate_code')->unique();
+            $table->softDeletes();
             $table->timestamps();
         });
     }
