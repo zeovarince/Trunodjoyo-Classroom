@@ -17,6 +17,8 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
+            $table->string('fakultas')->nullable();
+            $table->string('prodi')->nullable();
             $table->rememberToken();
             $table->timestamps();
             $table->string('npm')->unique()->nullable()->comment('NPM untuk Mahasiswa, NIP untuk Dosen');

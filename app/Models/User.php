@@ -40,6 +40,12 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'npm',
+        'role',
+        'exp',
+        'avatar',
+        'fakultas',
+        'prodi',   
     ];
 
     /**

@@ -27,11 +27,14 @@ class UserFactory extends Factory
             'name' => fake()->name(),
             'email' => fake()->unique()->safeEmail(),
             'email_verified_at' => now(),
+            'fakultas' => fake()->randomElement(['Teknik', 'Ekonomi', 'Ilmu Komputer', 'Hukum']),
+            'prodi' => fake()->randomElement(['Informatika', 'Sistem Informasi', 'Manajemen', 'Akuntansi', 'Ilmu Hukum']),
             'password' => static::$password ??= Hash::make('password'),
             'remember_token' => Str::random(10),
             'role' => fake()->randomElement(['dosen', 'mahasiswa']),
             'npm' => fake()->unique()->numerify('############'),
             'exp' => 0,
+            'avatar' => null,
         ];
     }
 
