@@ -18,6 +18,10 @@ Route::get('/profile', function () {
     return view('profile');
 });
 
+Route::get('/tugas/detail', function () {
+    return view('pengumpulan_tugas'); // Pastikan nama file view-nya BENAR
+});
+
 // Route untuk halaman Forum (Detail Kelas)
 Route::get('/kelas/detail', function () {
     return view('detail_kelas'); 
