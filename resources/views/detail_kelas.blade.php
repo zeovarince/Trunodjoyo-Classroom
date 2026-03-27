@@ -17,9 +17,20 @@
 </div>
 
 <div class="flex items-center gap-8 border-b border-slate-700 mb-8 px-2">
-    <button class="pb-4 text-sm font-bold border-b-2 border-amber-400 text-amber-400">Forum</button>
-    <button class="pb-4 text-sm font-medium text-slate-400 hover:text-white transition-all">Tugas Kelas</button>
-    <button class="pb-4 text-sm font-medium text-slate-400 hover:text-white transition-all">Anggota</button>
+    <a href="/kelas/detail" 
+       class="pb-4 text-sm transition-all {{ request()->is('kelas/detail') ? 'font-bold border-b-2 border-amber-400 text-amber-400' : 'font-medium text-slate-400 hover:text-white' }}">
+       Forum
+    </a>
+
+    <a href="/tugas" 
+       class="pb-4 text-sm transition-all {{ request()->is('tugas') ? 'font-bold border-b-2 border-amber-400 text-amber-400' : 'font-medium text-slate-400 hover:text-white' }}">
+       Tugas Kelas
+    </a>
+
+    <a href="/anggota" 
+       class="pb-4 text-sm transition-all {{ request()->is('kelas/anggota') ? 'font-bold border-b-2 border-amber-400 text-amber-400' : 'font-medium text-slate-400 hover:text-white' }}">
+       Anggota
+    </a>
 </div>
 
 <div class="grid grid-cols-1 lg:grid-cols-4 gap-8">
@@ -49,8 +60,10 @@
                 </div>
                 <div class="flex-1">
                     <div class="flex justify-between items-start">
+                        <a href="/tugas/detail" >
                         <h3 class="font-bold text-white text-lg group-hover:text-amber-400 transition-colors">Materi 01: Pengenalan Laravel & Arsitektur MVC</h3>
                         <span class="text-[10px] text-slate-500 font-mono">26 MAR 2026</span>
+                        </a>
                     </div>
                     <p class="text-sm text-slate-400 mt-2 line-clamp-2">Silahkan pelajari dokumentasi awal mengenai struktur folder Laravel dan bagaimana cara kerja Routing.</p>
                 </div>

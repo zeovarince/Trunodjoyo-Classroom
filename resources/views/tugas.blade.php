@@ -66,7 +66,7 @@
                     </td>
                     <td class="px-6 py-4 text-right">
                         <button class="text-amber-400 hover:text-amber-300 text-sm font-bold underline decoration-2 underline-offset-4">
-                            Kerjakan
+                            <a href="/tugas/detail" >Kerjakan</a>
                         </button>
                     </td>
                 </tr>

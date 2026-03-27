@@ -28,9 +28,13 @@
                 Buat Kelas
             </button>
             
-            <div class="w-9 h-9 rounded-full border-2 border-amber-400 overflow-hidden bg-slate-700">
-                <img src="https://ui-avatars.com/api/?name=Zaki+Developer&background=FBBF24&color=0F172A" class="w-full h-full">
-            </div>
+            <a href="/profile" class="flex items-center gap-3 hover:bg-slate-700/50 p-2 rounded-xl transition-all cursor-pointer">
+    <div class="w-10 h-10 rounded-full border border-amber-400 flex items-center justify-center bg-slate-800 text-amber-400 font-bold text-xs shadow-inner">AR</div>
+    <div class="overflow-hidden">
+        <p class="text-xs font-bold truncate">Ainur Raftuzzaki</p>
+        <p class="text-[9px] text-amber-400 uppercase tracking-widest font-mono">Lihat Profil</p>
+    </div>
+</a>
         </div>
     </header>
 
