@@ -13,17 +13,3 @@ Route::get('/tugas', function () {
 Route::get('/kelas/{id}', function ($id) {
     return view('detail_kelas');
 });
-
-Route::get('/profile', function () {
-    return view('profile');
-});
-
-// Route untuk halaman Forum (Detail Kelas)
-Route::get('/kelas/detail', function () {
-    return view('detail_kelas'); 
-});
-
-// Route untuk halaman Anggota
-Route::get('/anggota', function () {
-    return view('anggota_kelas'); 
-});
