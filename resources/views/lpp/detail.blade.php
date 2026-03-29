@@ -3,6 +3,8 @@
 @section('header_title', 'Detail LPP')
 
 @section('content')
+
+
 <div class="bg-[#1E293B] p-6 rounded-xl shadow mb-6">
     <h1 class="text-2xl font-bold text-[#FBBF24] mb-2">
         {{ $lpp->title }}
@@ -38,7 +40,24 @@
             <p class="text-slate-400">Belum ada tugas.</p>
         @endforelse
     </div>
+@if($lpp->file_path)
+    <div class="bg-[#1E293B] p-4 rounded-xl mb-6">
+        <h2 class="text-lg font-bold text-[#FBBF24] mb-3">📄 Materi</h2>
 
+        <iframe 
+            src="{{ asset('storage/' . $lpp->file_path) }}" 
+            width="100%" 
+            height="500px"
+            class="rounded border border-slate-700">
+        </iframe>
+
+        <a href="{{ asset('storage/' . $lpp->file_path) }}" 
+           target="_blank"
+           class="inline-block mt-3 px-4 py-2 bg-blue-500 text-white rounded">
+            Buka
+        </a>
+    </div>
+@endif
     <!-- ================== DISKUSI ================== -->
     <div class="bg-[#1E293B] p-6 rounded-xl shadow">
         <h2 class="text-xl font-bold text-[#FBBF24] mb-4">
@@ -46,23 +65,39 @@
         </h2>
 
         <!-- FORM DISKUSI -->
-        <form method="POST" action="{{ route('thread.store') }}" class="mb-4">
-            @csrf
-            <input type="hidden" name="lpp_id" value="{{ $lpp->id }}">
 
-            <textarea 
-                name="content"
-                class="w-full p-3 rounded bg-[#0F172A] border border-slate-700 text-white focus:outline-none focus:ring-2 focus:ring-[#FBBF24]"
-                placeholder="Tulis diskusi..."
-                required
-            ></textarea>
+<form method="POST" action="{{ route('thread.store') }}" class="mb-4">
+    @csrf
 
-            <button 
-                class="mt-2 px-4 py-2 bg-[#FBBF24] text-black rounded font-bold hover:opacity-90 transition">
-                Kirim
-            </button>
-        </form>
+    <input type="hidden" name="lpp_id" value="{{ $lpp->id }}">
 
+    <textarea 
+        name="content"
+        class="w-full p-3 rounded bg-[#0F172A] border border-slate-700 text-white"
+        placeholder="Tulis diskusi..."
+        required
+    ></textarea>
+
+    <button 
+        class="mt-2 px-4 py-2 bg-yellow-400 text-black rounded font-bold">
+        Kirim
+    </button>
+</form>
+@if(auth()->user()->role === 'dosen')
+    <h2 class="text-xl font-bold text-[#FBBF24] mb-4">📄 Upload Materi</h2>
+
+    <form method="POST" action="{{ route('lpp.upload') }}" enctype="multipart/form-data">
+        @csrf
+
+        <input type="hidden" name="lpp_id" value="{{ $lpp->id }}">
+
+        <input type="file" name="file" class="mb-2 text-white">
+
+        <button class="px-4 py-2 bg-green-500 text-black rounded font-bold">
+            Upload
+        </button>
+    </form>
+@endif
         <!-- LIST THREAD -->
         @forelse($threads as $t)
             <div class="border-b border-slate-700 py-3">

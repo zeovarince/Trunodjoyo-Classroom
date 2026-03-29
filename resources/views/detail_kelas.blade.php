@@ -60,10 +60,13 @@
                 </div>
                 <div class="flex-1">
                     <div class="flex justify-between items-start">
-                        <a href="/tugas/detail" >
-                        <h3 class="font-bold text-white text-lg group-hover:text-amber-400 transition-colors">Materi 01: Pengenalan Laravel & Arsitektur MVC</h3>
-                        <span class="text-[10px] text-slate-500 font-mono">26 MAR 2026</span>
-                        </a>
+                        <a href="/lpp/1" class="block">
+    <div class="bg-[#1E293B] p-4 rounded-xl">
+        <h3 class="text-white font-semibold">
+            Materi 01: Pengenalan Laravel & Arsitektur MVC
+        </h3>
+    </div>
+</a>
                     </div>
                     <p class="text-sm text-slate-400 mt-2 line-clamp-2">Silahkan pelajari dokumentasi awal mengenai struktur folder Laravel dan bagaimana cara kerja Routing.</p>
                 </div>
