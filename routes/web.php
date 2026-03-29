@@ -3,6 +3,8 @@
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\KelasController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\LppController;
+use App\Http\Controllers\ThreadController;
 
 // 1. Default route diarahkan ke login
 Route::get('/', function () {
@@ -60,6 +62,10 @@ Route::middleware(['auth'])->group(function () {
     // Mahasiswa
     Route::get('/kelas-join', [KelasController::class, 'join'])->name('kelas.join');
     Route::post('/kelas-join', [KelasController::class, 'storeJoin'])->name('kelas.storeJoin');
+
+    // ================== LPP ==================
+    Route::get('/lpp/{id}', [LppController::class, 'show'])->name('lpp.show');
+    Route::post('/thread', [ThreadController::class, 'store'])->name('thread.store');
 });
 
 // 5. Memanggil route Auth Breeze

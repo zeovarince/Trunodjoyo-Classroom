@@ -11,7 +11,8 @@ class Classroom extends Model
     use SoftDeletes;
 
     // Relasi ke model Lpp one to many
-    public function lpps(){
-        return $this->hasMany(Lpp::class);
-    }
+    public function lpps()
+{
+    return $this->hasMany(Lpp::class);
+}
 }

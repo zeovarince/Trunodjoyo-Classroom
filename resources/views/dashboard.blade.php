@@ -44,7 +44,8 @@
 
         <div class="px-5 pb-5 mt-auto">
             <button class="w-full py-2 bg-slate-700 group-hover:bg-amber-400 group-hover:text-slate-900 rounded-lg text-sm font-bold transition-colors">
-                <a href="/kelas/1" >
+                <a href="{{ route('lpp.show', 1) }}" 
+   class="block text-center w-full py-2 bg-slate-700 group-hover:bg-amber-400 group-hover:text-slate-900 rounded-lg text-sm font-bold transition-colors">
     Masuk Kelas
 </a>
             </button>
