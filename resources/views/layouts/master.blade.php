@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Trunodjoyo Class - {{ Auth::user()->role == 'dosen' ? 'Panel Dosen' : 'Portal Mahasiswa' }}</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="icon" href="../../public/images/Logo-utm.png">
+    <link rel="icon" type="image/png" href="{{ asset('images/Logo-utm.png') }}">
     </link>
     <style>
         .custom-scrollbar::-webkit-scrollbar {

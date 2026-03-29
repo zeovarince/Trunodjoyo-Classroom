@@ -26,4 +26,8 @@ class Classroom extends Model
         // Parameter kedua adalah nama foreign key di tabel classrooms
         return $this->belongsTo(User::class, 'dosen_id');
     }
+    public function students()
+    {
+        return $this->belongsToMany(User::class, 'classroom_user', 'classroom_id', 'user_id');
+    }
 }

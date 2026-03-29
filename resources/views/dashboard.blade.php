@@ -83,10 +83,16 @@ $themeBtnHover = 'group-hover:bg-amber-400';
             <div class="space-y-2">
                 <div class="flex justify-between text-[10px] text-slate-500 uppercase font-black tracking-widest">
                     <span>Mahasiswa Bergabung</span>
-                    <span class="{{ $themeText }}">{{ $kelas->total_students ?? 0 }} Siswa</span>
+                    <span class="{{ $themeText }}">{{ $kelas->students->count() }} Siswa</span>
                 </div>
                 <div class="w-full h-1.5 bg-slate-900 rounded-full overflow-hidden border border-slate-700/50">
-                    <div class="{{ $themeBg }} h-full rounded-full" style="width: 15%"></div>
+                    @php
+                    $count = $kelas->students->count();
+                    $displayPercent = $count > 0 ? 100 : 0;
+                    @endphp
+                    <div class="{{ $themeBg }} h-full rounded-full transition-all duration-1000"
+                        style="width: {{ $displayPercent }}%">
+                    </div>
                 </div>
             </div>
         </div>
