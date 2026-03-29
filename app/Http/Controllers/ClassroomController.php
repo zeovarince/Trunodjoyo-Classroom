@@ -9,9 +9,7 @@ use Illuminate\Support\Facades\Auth;
 
 class ClassroomController extends Controller
 {
-    /**
-     * READ: Menampilkan daftar kelas di Dashboard
-     */
+    // menampilkan daftar kelas yang dibuat dosen atau diikuti mahasiswa
     public function index()
     {
         $user = Auth::user();
@@ -23,16 +21,17 @@ class ClassroomController extends Controller
                 ->get();
         } else {
             // Mahasiswa melihat kelas yang mereka ikuti
-            // Catatan: Jika kamu belum buat logic join, sementara ambil semua kelas
             $classrooms = Classroom::latest()->get();
         }
 
         return view('dashboard', compact('classrooms'));
     }
-
-    /**
-     * CREATE: Menyimpan kelas baru ke database
-     */
+    // Menampilkan form untuk membuat kelas baru (Dosen)
+    public function create()
+    {
+        return view('kelas.create'); 
+    }
+    // Proses menyimpan kelas baru ke database (Dosen)
     public function store(Request $request)
     {
         $request->validate([
@@ -47,12 +46,32 @@ class ClassroomController extends Controller
             'code' => strtoupper(Str::random(6)), // Generate kode unik 6 digit
         ]);
 
-        return redirect()->back()->with('success', 'Kelas berhasil dibuat!');
+        return redirect()->route('kelas.index')->with('success', 'Kelas berhasil dibuat!');
     }
 
-    /**
-     * UPDATE: Memperbarui data kelas (Nama/Seksi)
-     */
+    public function show($id)
+    {
+        // Cari kelas berdasarkan ID, kalau tidak ada munculkan 404
+        $classroom = Classroom::findOrFail($id);
+
+        // Arahkan ke file resources/views/detail_kelas.blade.php
+        return view('detail_kelas', compact('classroom'));
+    }
+    // Menampilkan form untuk mengedit kelas (Dosen)
+    public function edit($id)
+    {
+        $classroom = Classroom::findOrFail($id);
+
+        // Pastikan hanya dosen pemilik kelas yang bisa akses halaman edit
+        if ($classroom->dosen_id !== Auth::id()) {
+            return redirect()->back()->with('error', 'Akses ditolak!');
+        }
+
+        // Pastikan kamu punya file view: resources/views/kelas/edit.blade.php
+        return view('kelas.edit', compact('classroom'));
+    }
+
+    // Proses update kelas di database (Dosen)
     public function update(Request $request, $id)
     {
         $request->validate([
@@ -72,12 +91,10 @@ class ClassroomController extends Controller
             'section' => $request->section,
         ]);
 
-        return redirect()->back()->with('success', 'Data kelas berhasil diperbarui!');
+        return redirect()->route('kelas.index')->with('success', 'Data kelas berhasil diperbarui!');
     }
 
-    /**
-     * DELETE: Menghapus kelas (Soft Delete)
-     */
+    // DELETE: Menghapus kelas (Dosen)
     public function destroy($id)
     {
         $classroom = Classroom::findOrFail($id);
@@ -89,6 +106,34 @@ class ClassroomController extends Controller
 
         $classroom->delete();
 
-        return redirect()->back()->with('success', 'Kelas berhasil dihapus!');
+        return redirect()->route('kelas.index')->with('success', 'Kelas berhasil dihapus!');
+    }
+
+    // Menampilkan form untuk mahasiswa bergabung ke kelas menggunakan kode unik
+    public function join()
+    {
+        // Pastikan kamu punya file view: resources/views/kelas/join.blade.php
+        return view('kelas.join');
+    }
+
+    // Proses mahasiswa bergabung ke kelas menggunakan kode unik
+    public function storeJoin(Request $request)
+    {
+        $request->validate([
+            'code' => 'required|string',
+        ]);
+
+        $classroom = Classroom::where('code', $request->code)->first();
+
+        if (!$classroom) {
+            return redirect()->back()->with('error', 'Kode kelas tidak valid atau tidak ditemukan!');
+        }
+        $user = Auth::user();
+        if ($user->joinedClassrooms()->where('classroom_id', $classroom->id)->exists()) {
+            return redirect()->back()->with('error', 'Kamu sudah bergabung di kelas ini!');
+        }
+
+        $user->joinedClassrooms()->attach($classroom->id);
+        return redirect()->route('kelas.index')->with('success', 'Berhasil bergabung ke kelas!');
     }
 }

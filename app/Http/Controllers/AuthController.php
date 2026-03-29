@@ -24,15 +24,10 @@ class AuthController extends Controller
             'password' => 'required'
         ]);
 
-        // Cek kecocokan di database
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
-            
-            // Jika berhasil, lempar ke dashboard
-            return redirect()->intended('/');
+            return redirect()->intended('/kelas');
         }
-
-        // Jika gagal, balik ke login dengan pesan error
         return back()->withErrors([
             'email' => 'Email atau password yang Anda masukkan salah.',
         ])->onlyInput('email');
@@ -45,8 +40,7 @@ class AuthController extends Controller
     }
 
     // 4. Proses Register (Untuk User Baru)
-    public function register(Request $request)
-    {
+    public function register(Request $request){
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'npm' => 'required|string|unique:users', 
@@ -59,17 +53,11 @@ class AuthController extends Controller
             'name' => $validated['name'],
             'email' => $validated['email'],
             'password' => Hash::make($validated['password']),
-            'npm' => $validated['npm'],
-            'role' => 'mahasiswa', // Default role
-            'exp' => 0,            // Mulai dari 0 XP
-            'prodi' => 'Teknik Informatika',
-            'fakultas' => 'Teknik',
+            'npm' => $validated['npm'], 
         ]);
-
-        // Langsung login setelah daftar
         Auth::login($user);
 
-        return redirect('/');
+        return redirect('/kelas');
     }
 
     // 5. Proses Logout (PENTING!)

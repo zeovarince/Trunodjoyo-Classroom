@@ -82,14 +82,14 @@ class DatabaseSeeder extends Seeder
             'exp' => 95,
         ]);
 
-DB::table('classrooms')->insert([
-    'name' => 'Pemrograman Web',
-    'kode' => 'TRUNO123',
-    'generate_code' => 'TRUNO123', 
-    'dosen_id' => 1,
-    'created_at' => now(),
-    'updated_at' => now(),
-]);
+        DB::table('classrooms')->insert([
+            'name' => 'Pemrograman Web',
+            'code' => 'TRUNO123',
+            'dosen_id' => 1,
+            'section' => 'F',
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
 
         DB::table('lpps')->insert([
             [

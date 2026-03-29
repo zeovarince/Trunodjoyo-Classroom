@@ -15,11 +15,9 @@ return new class extends Migration
             $table->id();
             // Menghubungkan kelas dengan dosen yang membuatnya
             $table->foreignId('dosen_id')->constrained('users')->cascadeOnDelete();
-            
-            $table->string('name');      // Nama Mata Kuliah
-            $table->string('section');   // Ruangan / Seksi (Tambahan baru)
-            $table->string('code')->unique(); // Kode unik untuk gabung kelas
-            
+            $table->string('name');   
+            $table->string('section')->nullable();   
+            $table->string('code')->unique();             
             $table->softDeletes();
             $table->timestamps();
         });

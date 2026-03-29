@@ -19,7 +19,7 @@
     <div>
         <div class="flex items-center gap-4">
             <h1 class="text-3xl font-black tracking-tight text-white">
-                Halo, {{ explode(' ', $user->name)[0] }}! 👋
+                Wellcome, {{ explode(' ', $user->name)[0] }}!
             </h1>
             @if($isDosen)
                 <span class="px-3 py-1 bg-amber-400/10 border border-amber-400/20 rounded-full text-[10px] font-black text-amber-400 uppercase tracking-widest">
@@ -65,8 +65,8 @@
                     {{ strtoupper(substr($kelas->name, 0, 2)) }}
                 </div>
                 <div class="text-sm">
-                    <p class="font-bold text-white leading-none">Status: Aktif</p>
-                    <p class="text-slate-500 text-[10px] uppercase font-bold mt-1 tracking-wider">Terakhir Update: {{ $kelas->updated_at->diffForHumans() }}</p>
+                    <p class="font-bold text-white leading-none">Dosen Pengampu : {}</p>
+                    <p class="text-slate-500 text-xs italic">{{ optional(Auth::user())->name }}</p>
                 </div>
             </div>
 
