@@ -64,10 +64,14 @@
                 <div class="w-9 h-9 rounded-xl bg-slate-900 border border-slate-700 flex items-center justify-center text-xs font-black {{ $themeText }} shadow-inner">
                     {{ strtoupper(substr($kelas->name, 0, 2)) }}
                 </div>
-                <div class="text-sm">
-                    <p class="font-bold text-white leading-none">Dosen Pengampu : {}</p>
-                    <p class="text-slate-500 text-xs italic">{{ optional(Auth::user())->name }}</p>
-                </div>
+<div class="text-sm">
+    <p class="font-bold text-white leading-none">
+        {{ optional($kelas->dosen)->name ?? 'Tidak diketahui' }}
+    </p>
+    <p class="text-slate-500 text-xs italic">
+        {{ ucfirst(optional($kelas->dosen)->role ?? '-') }}
+    </p>
+</div>
             </div>
 
             <div class="space-y-2">
@@ -83,7 +87,7 @@
 
         <div class="px-5 pb-5 mt-auto">
             <button class="w-full py-2 bg-slate-700 group-hover:bg-amber-400 group-hover:text-slate-900 rounded-lg text-sm font-bold transition-colors">
-                <a href="/kelas/1" >
+               <a href="/kelas/{{ $kelas->id }}">
     Masuk Kelas
 </a>
             </button>

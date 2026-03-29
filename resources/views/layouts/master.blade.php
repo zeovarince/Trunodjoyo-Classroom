@@ -58,9 +58,9 @@
             <div class="px-6 mt-8 mb-4 text-[10px] font-black text-slate-500 uppercase tracking-[0.2em]">Akademik</div>
             <ul class="space-y-1 px-3">
                 <li>
-                    <a href="/anggota" class="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-400 hover:bg-slate-700 hover:text-white transition-all">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
-                        {{ $isDosen ? 'Daftar Mahasiswa' : 'Teman Sekelas' }}
+                    <a href="/tugas" class="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-400 hover:bg-slate-700 hover:text-white transition-all">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5h6M9 9h6m-6 4h6M5 5l1 1 2-2M5 11l1 1 2-2M5 17l1 1 2-2"/></svg>
+                        Daftar Tugas
                     </a>
                 </li>
             </ul>
