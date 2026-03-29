@@ -4,57 +4,63 @@
 
 @section('content')
 @php
-    $user = Auth::user();
-    $isDosen = $user->role == 'dosen';
-    
-    $themeColor = 'amber-400';
-    $themeText = 'text-amber-400';
-    $themeBg = 'bg-amber-400';
-    $themeHover = 'hover:border-amber-400';
-    $themeShadow = 'hover:shadow-amber-400/10';
-    $themeBtnHover = 'group-hover:bg-amber-400';
+$user = Auth::user();
+$isDosen = $user->role == 'dosen';
+
+$themeColor = 'amber-400';
+$themeText = 'text-amber-400';
+$themeBg = 'bg-amber-400';
+$themeHover = 'hover:border-amber-400';
+$themeShadow = 'hover:shadow-amber-400/10';
+$themeBtnHover = 'group-hover:bg-amber-400';
 @endphp
 
 <div class="mb-10 flex justify-between items-end">
     <div>
         <div class="flex items-center gap-4">
             <h1 class="text-3xl font-black tracking-tight text-white">
-                Wellcome, {{ explode(' ', $user->name)[0] }}!
+                Welcome To Your {{ $isDosen ? 'Teaching' : 'Learning' }} Dashboard
             </h1>
             @if($isDosen)
-                <span class="px-3 py-1 bg-amber-400/10 border border-amber-400/20 rounded-full text-[10px] font-black text-amber-400 uppercase tracking-widest">
-                    Dosen Aktif
-                </span>
+            <span class="px-3 py-1 bg-amber-400/10 border border-amber-400/20 rounded-full text-[10px] font-black text-amber-400 uppercase tracking-widest">
+                Dosen Aktif
+            </span>
             @endif
         </div>
-        <p class="text-slate-400 mt-1 font-medium">
-            Anda sedang mengelola <span class="{{ $themeText }} font-black text-lg">{{ $classrooms->count() }}</span> kelas mata kuliah semester ini.
+        <p class="text-slate-500 text-sm mt-1">
+            {{ $isDosen ? 'Kelola kelas yang Anda ajar dan pantau perkembangan siswa.' : 'Lihat kelas yang Anda ikuti dan terus belajar!' }}
         </p>
     </div>
 </div>
 
 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-    
+
     @foreach($classrooms as $kelas)
     <div class="group relative bg-slate-800 border border-slate-700 rounded-3xl overflow-hidden {{ $themeHover }} transition-all duration-500 shadow-xl {{ $themeShadow }} flex flex-col">
-        
+
         {{-- Header Kartu --}}
         <div class="h-28 bg-gradient-to-br from-amber-400 to-amber-600 p-5 relative flex flex-col justify-end">
+            @if($isDosen)
             <div class="absolute top-3 right-3 flex gap-2">
                 {{-- Tombol Edit --}}
                 <button onclick="openEditModal('{{ $kelas->id }}', '{{ $kelas->name }}', '{{ $kelas->section }}')" class="bg-slate-900/40 backdrop-blur-md p-2 rounded-lg text-white hover:bg-amber-500 hover:text-slate-900 transition-all">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" /></svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+                    </svg>
                 </button>
-                
+
                 {{-- Tombol Hapus --}}
                 <form action="/kelas/{{ $kelas->id }}" method="POST" onsubmit="return confirm('Yakin ingin menghapus kelas ini?')">
                     @csrf
                     @method('DELETE')
                     <button type="submit" class="bg-slate-900/40 backdrop-blur-md p-2 rounded-lg text-white hover:bg-red-500 transition-all">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                        </svg>
                     </button>
                 </form>
             </div>
+            @endif
             <h2 class="text-slate-900 font-black text-xl leading-tight truncate">{{ $kelas->name }}</h2>
             <p class="text-slate-900/70 text-xs font-bold italic tracking-wide">{{ $kelas->section }} • {{ $kelas->code }}</p>
         </div>
@@ -64,14 +70,14 @@
                 <div class="w-9 h-9 rounded-xl bg-slate-900 border border-slate-700 flex items-center justify-center text-xs font-black {{ $themeText }} shadow-inner">
                     {{ strtoupper(substr($kelas->name, 0, 2)) }}
                 </div>
-<div class="text-sm">
-    <p class="font-bold text-white leading-none">
-        {{ optional($kelas->dosen)->name ?? 'Tidak diketahui' }}
-    </p>
-    <p class="text-slate-500 text-xs italic">
-        {{ ucfirst(optional($kelas->dosen)->role ?? '-') }}
-    </p>
-</div>
+                <div class="text-sm">
+                    <p class="font-bold text-white leading-none">
+                        {{ optional($kelas->dosen)->name ?? 'Tidak diketahui' }}
+                    </p>
+                    <p class="text-slate-500 text-xs italic">
+                        {{ ucfirst(optional($kelas->dosen)->role ?? '-') }}
+                    </p>
+                </div>
             </div>
 
             <div class="space-y-2">
@@ -87,35 +93,28 @@
 
         <div class="px-5 pb-5 mt-auto">
             <button class="w-full py-2 bg-slate-700 group-hover:bg-amber-400 group-hover:text-slate-900 rounded-lg text-sm font-bold transition-colors">
-               <a href="/kelas/{{ $kelas->id }}">
-    Masuk Kelas
-</a>
+                <a href="/kelas/{{ $kelas->id }}" class="block w-full h-full">
+                    Masuk Kelas
+                </a>
             </button>
         </div>
     </div>
     @endforeach
-
-    {{-- Tombol Tambah --}}
-    <div onclick="openModal()" class="border-2 border-dashed border-slate-700 rounded-3xl p-8 flex flex-col items-center justify-center text-center group hover:border-amber-400 transition-all cursor-pointer bg-slate-800/30 hover:bg-slate-800/50">
-        <div class="w-12 h-12 rounded-2xl bg-slate-800 flex items-center justify-center text-slate-500 group-hover:bg-amber-400 group-hover:text-slate-900 transition-all mb-4 shadow-lg">
-            <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" /></svg>
-        </div>
-        <p class="text-xs font-black uppercase tracking-widest text-slate-500 group-hover:text-white transition-colors">
-            Buat Mata Kuliah Baru
-        </p>
-    </div>
 </div>
 
+@if($isDosen)
 {{-- MODAL EDIT KELAS --}}
 <div id="editModal" class="fixed inset-0 z-[70] hidden flex items-center justify-center p-4 bg-slate-950/90 backdrop-blur-md transition-all">
     <div class="bg-slate-800 border border-slate-700 w-full max-w-md rounded-3xl shadow-2xl overflow-hidden transform scale-95 transition-transform duration-300" id="editModalContent">
         <div class="p-6 border-b border-slate-700 flex justify-between items-center text-amber-400">
             <h3 class="text-xl font-black uppercase tracking-tight">Edit Mata Kuliah</h3>
             <button onclick="closeEditModal()" class="text-slate-500 hover:text-white transition-colors">
-                <svg xmlns="http://www.w3.org/2000/svg" class="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                </svg>
             </button>
         </div>
-        
+
         <form id="editForm" method="POST" class="p-8 space-y-5">
             @csrf
             @method('PUT')
@@ -139,7 +138,7 @@
         const modal = document.getElementById('editModal');
         const content = document.getElementById('editModalContent');
         const form = document.getElementById('editForm');
-        
+
         // Set values
         document.getElementById('edit_name').value = name;
         document.getElementById('edit_section').value = section;
@@ -162,4 +161,5 @@
         }, 200);
     }
 </script>
+@endif
 @endsection

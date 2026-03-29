@@ -13,7 +13,7 @@ class ClassroomController extends Controller
     public function index()
     {
         $user = Auth::user();
-        
+
         if ($user->role == 'dosen') {
             // Dosen hanya melihat kelas yang mereka buat sendiri
             $classrooms = Classroom::where('dosen_id', $user->id)
@@ -29,7 +29,7 @@ class ClassroomController extends Controller
     // Menampilkan form untuk membuat kelas baru (Dosen)
     public function create()
     {
-        return view('kelas.create'); 
+        return view('kelas.create');
     }
     // Proses menyimpan kelas baru ke database (Dosen)
     public function store(Request $request)
@@ -51,11 +51,17 @@ class ClassroomController extends Controller
 
     public function show($id)
     {
-        // Cari kelas berdasarkan ID, kalau tidak ada munculkan 404
+        $user = Auth::user();
         $classroom = Classroom::findOrFail($id);
 
-        // Arahkan ke file resources/views/detail_kelas.blade.php
-        return view('detail_kelas', compact('classroom'));
+        // Ambil semua kelas agar Sidebar tidak kosong
+        if ($user->role == 'dosen') {
+            $classrooms = Classroom::where('dosen_id', $user->id)->latest()->get();
+        } else {
+            $classrooms = Classroom::latest()->get();
+        }
+
+        return view('detail_kelas', compact('classroom', 'classrooms'));
     }
     // Menampilkan form untuk mengedit kelas (Dosen)
     public function edit($id)

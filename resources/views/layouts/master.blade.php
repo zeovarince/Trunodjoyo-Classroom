@@ -1,48 +1,88 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Trunodjoyo Class - {{ Auth::user()->role == 'dosen' ? 'Panel Dosen' : 'Portal Mahasiswa' }}</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="icon" href="../../public/images/Logo-utm.png">
+    </link>
     <style>
-        .custom-scrollbar::-webkit-scrollbar { width: 4px; }
-        .custom-scrollbar::-webkit-scrollbar-track { background: #1e293b; }
-        .custom-scrollbar::-webkit-scrollbar-thumb { background: #334155; border-radius: 10px; }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #1e293b;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #334155;
+            border-radius: 10px;
+        }
     </style>
+
 </head>
+
 <body class="bg-slate-900 text-white font-sans antialiased overflow-x-hidden">
 
     @php
-        $user = Auth::user();
-        $isDosen = $user->role == 'dosen';
-        $themeText = 'text-amber-400';
-        $themeBg = 'bg-amber-400';
-        $themeBorder = 'border-amber-400/20';
+    $user = Auth::user();
+    $isDosen = $user->role == 'dosen';
+    $themeText = 'text-amber-400';
+    $themeBg = 'bg-amber-400';
+    $themeBorder = 'border-amber-400/20';
+
+    $sidebarClassrooms = $isDosen ? $user->taughtClassrooms : $user->joinedClassrooms;
+    $currentPath = Request::path();
+    $defaultHeader = 'Beranda';
+    if ($currentPath == '/' || $currentPath == 'kelas') {
+    $defaultHeader = 'Dashboard Utama';
+    } elseif ($currentPath == 'tugas') {
+    $defaultHeader = 'Daftar Tugas';
+    } elseif ($currentPath == 'profile') {
+    $defaultHeader = 'Profil Pengguna';
+    }
     @endphp
-    $notifications = \App\Models\Notification::where('user_id', auth()->id())
-    ->latest()
-    ->take(5)
-    ->get();
 
     {{-- HEADER --}}
     <header class="fixed top-0 left-0 right-0 h-16 bg-slate-800 border-b border-slate-700 flex items-center justify-between px-6 z-50 shadow-sm">
         <div class="flex items-center gap-3">
-            <div class="w-10 h-10 flex items-center justify-center p-0.5">        
+            <div class="w-10 h-10 flex items-center justify-center p-0.5">
                 <img src="{{ asset('images/Logo-utm.png') }}" alt="UTM" class="w-full h-full object-contain">
             </div>
             <span class="text-xl font-bold {{ $themeText }} tracking-tighter hidden sm:block">
                 Trunodjoyo <span class="text-white">Classroom</span>
             </span>
         </div>
-        
+
         <div class="flex items-center gap-4">
-            <button onclick="openModal()" class="{{ $themeBg }} text-slate-900 px-4 py-2 rounded-xl font-black hover:opacity-90 transition-all text-xs uppercase tracking-wider shadow-lg flex items-center gap-2">
-                <span>{{ $isDosen ? 'Buat Kelas' : 'Gabung Kelas' }}</span>
-            </button>
-            <a href="/profile" class="w-9 h-9 rounded-xl border {{ $themeBorder }} overflow-hidden bg-slate-800">
-                <img src="https://ui-avatars.com/api/?name={{ urlencode($user->name) }}&background=0F172A&color=FBBF24&bold=true" class="w-full h-full">
+            {{-- HEADER TITLE DINAMIS --}}
+            <div class="hidden md:block text-slate-400 text-sm font-medium mr-4">
+                @hasSection('header_title')
+                @yield('header_title')
+                @else
+                {{ $defaultHeader }}
+                @endif
+            </div>
+
+            <div class="flex items-center gap-4">
+                <button onclick="openModal()" class="{{ $themeBg }} text-slate-900 px-4 py-2 rounded-xl font-black hover:opacity-90 transition-all text-xs uppercase tracking-wider shadow-lg flex items-center gap-2">
+                    <span>{{ $isDosen ? 'Buat Kelas' : 'Gabung Kelas' }}</span>
+                </button>
+                <a href="/profile" class="flex items-center gap-3 hover:bg-slate-700/50 p-2 rounded-xl transition-all cursor-pointer">
+                    <div class="w-10 h-10 rounded-full border border-amber-400 flex items-center justify-center bg-slate-800 text-amber-400 font-bold text-xs shadow-inner">
+                        {{ strtoupper(substr($user->name, 0, 2)) }}
+                    </div>
+                    <div class="hidden sm:block overflow-hidden">
+                        <p class="text-sm font-bold text-white leading-none truncate">{{ $user->name }}</p>
+                        <p class="text-slate-500 text-xs italic">{{ ucfirst($user->role) }}</p>
+                    </div>
+                    <p class="text-[9px] text-amber-400 uppercase tracking-widest font-mono">Lihat Profil</p>
+            </div>
             </a>
+        </div>
         </div>
     </header>
 
@@ -52,51 +92,47 @@
             <div class="px-6 mb-4 text-[10px] font-black text-slate-500 uppercase tracking-[0.2em]">Menu Utama</div>
             <ul class="space-y-1 px-3">
                 <li>
-                    <a href="/" class="flex items-center gap-3 px-4 py-3 rounded-xl transition-all {{ Request::is('/') ? 'bg-slate-900/50 ' . $themeText . ' font-bold border border-slate-700' : 'text-slate-400 hover:bg-slate-700 hover:text-white' }}">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+                    <a href="/kelas" class="flex items-center gap-3 px-4 py-3 rounded-xl transition-all {{ Request::is('/') || Request::is('kelas') ? 'bg-slate-900/50 ' . $themeText . ' font-bold border border-slate-700' : 'text-slate-400 hover:bg-slate-700 hover:text-white' }}">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                        </svg>
                         Dashboard
                     </a>
                 </li>
-            </ul>
 
-            <div class="px-6 mt-8 mb-4 text-[10px] font-black text-slate-500 uppercase tracking-[0.2em]">Akademik</div>
-            <ul class="space-y-1 px-3">
                 <li>
-                    <a href="/tugas" class="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-400 hover:bg-slate-700 hover:text-white transition-all">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5h6M9 9h6m-6 4h6M5 5l1 1 2-2M5 11l1 1 2-2M5 17l1 1 2-2"/></svg>
+                    <a href="/tugas" class="flex items-center gap-3 px-4 py-3 rounded-xl transition-all {{ Request::is('tugas') ? 'bg-slate-900/50 ' . $themeText . ' font-bold border border-slate-700' : 'text-slate-400 hover:bg-slate-700 hover:text-white' }}">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                        </svg>
                         Daftar Tugas
                     </a>
                 </li>
             </ul>
 
-            {{-- BAGIAN BARU: DAFTAR MATA KULIAH DI SIDEBAR --}}
             <div class="px-6 mt-8 mb-4 text-[10px] font-black text-slate-500 uppercase tracking-[0.2em]">Mata Kuliah Anda</div>
             <ul class="space-y-1 px-3">
                 @isset($classrooms)
-                    @foreach($classrooms as $sidebarKelas)
-                    <li>
-                        <a href="/kelas/{{ $sidebarKelas->id }}" class="flex items-center gap-3 px-4 py-2 rounded-xl text-xs {{ Request::is('kelas/'.$sidebarKelas->id) ? $themeText . ' bg-amber-400/5 font-bold' : 'text-slate-400 hover:bg-slate-700/50 hover:text-white' }} transition-all group">
-                            <div class="w-2 h-2 rounded-full {{ Request::is('kelas/'.$sidebarKelas->id) ? 'bg-amber-400 shadow-[0_0_8px_rgba(251,191,36,0.5)]' : 'bg-slate-600 group-hover:bg-slate-400' }}"></div>
-                            <span class="truncate">{{ $sidebarKelas->name }}</span>
-                        </a>
-                    </li>
-                    @endforeach
+                @foreach($classrooms as $sidebarKelas)
+                <li>
+                    <a href="/kelas/{{ $sidebarKelas->id }}"
+                        class="flex items-center gap-3 px-4 py-2 rounded-xl text-xs transition-all group 
+               {{ Request::is('kelas/'.$sidebarKelas->id) ? 'bg-amber-400/10 ' . $themeText . ' font-bold border border-amber-400/20' : 'text-slate-400 hover:bg-slate-700/50 hover:text-white' }}">
+
+                        {{-- Indikator Bulat --}}
+                        <div class="w-2 h-2 rounded-full transition-all 
+                    {{ Request::is('kelas/'.$sidebarKelas->id) ? 'bg-amber-400 shadow-[0_0_8px_rgba(251,191,36,0.5)]' : 'bg-slate-600 group-hover:bg-amber-400' }}">
+                        </div>
+
+                        <span class="truncate">{{ $sidebarKelas->name }}</span>
+                    </a>
+                </li>
+                @endforeach
                 @else
-                    <li class="px-4 py-2 text-[10px] text-slate-600 italic">Buka Dashboard untuk memuat kelas</li>
+                <li class="px-4 py-2 text-[10px] text-slate-600 italic">Memuat kelas...</li>
                 @endisset
             </ul>
         </nav>
-
-        {{-- USER INFO BOTTOM --}}
-        <div class="p-4 border-t border-slate-700 bg-slate-800/80">
-            <div class="flex items-center gap-3 p-3 rounded-2xl bg-slate-900/50 border border-slate-700/50">
-                <img src="https://ui-avatars.com/api/?name={{ urlencode($user->name) }}&background=FBBF24&color=0F172A&bold=true" class="w-8 h-8 rounded-lg">
-                <div class="overflow-hidden">
-                    <p class="text-[11px] font-black text-white truncate">{{ $user->name }}</p>
-                    <p class="text-[9px] {{ $themeText }} font-bold uppercase tracking-tighter">Verified Lecturer</p>
-                </div>
-            </div>
-        </div>
     </aside>
 
     <main class="md:ml-64 pt-16 min-h-screen">
@@ -105,35 +141,52 @@
         </div>
     </main>
 
-    {{-- MODAL BUAT KELAS --}}
     <div id="actionModal" class="fixed inset-0 z-[60] hidden flex items-center justify-center p-4 bg-slate-950/90 backdrop-blur-md transition-all">
-        <div class="bg-slate-800 border border-slate-700 w-full max-w-md rounded-3xl shadow-2xl overflow-hidden transform scale-95 transition-transform duration-300" id="modalContent">
+        <div class="bg-slate-800 border border-slate-700 w-full max-w-md rounded-3xl shadow-2xl overflow-hidden" id="modalContent">
             <div class="p-6 border-b border-slate-700 flex justify-between items-center {{ $themeText }}">
-                <h3 class="text-xl font-black uppercase tracking-tight">Buat Kelas Baru</h3>
+                <h3 class="text-xl font-black uppercase tracking-tight">{{ $isDosen ? 'Buat Kelas Baru' : 'Gabung Kelas' }}</h3>
                 <button onclick="closeModal()" class="text-slate-500 hover:text-white">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
                 </button>
             </div>
+
+            @if($isDosen)
             <form action="{{ route('kelas.store') }}" method="POST" class="p-8 space-y-5">
                 @csrf
                 <div class="space-y-2">
                     <label class="text-[10px] font-black text-slate-500 uppercase ml-1">Nama Mata Kuliah</label>
-                    <input type="text" name="name" required placeholder="Contoh: Pemrograman Web" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-5 py-3 text-sm text-white focus:border-amber-400 outline-none transition-all">
+                    <input type="text" name="name" required class="w-full bg-slate-900 border border-slate-700 rounded-xl px-5 py-3 text-sm text-white focus:border-amber-400 outline-none transition-all">
                 </div>
                 <div class="space-y-2">
                     <label class="text-[10px] font-black text-slate-500 uppercase ml-1">Ruangan / Seksi</label>
-                    <input type="text" name="section" required placeholder="Contoh: Ruang A-301" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-5 py-3 text-sm text-white focus:border-amber-400 outline-none transition-all">
+                    <input type="text" name="section" required class="w-full bg-slate-900 border border-slate-700 rounded-xl px-5 py-3 text-sm text-white focus:border-amber-400 outline-none transition-all">
                 </div>
-                <button type="submit" class="w-full bg-amber-400 text-slate-900 py-4 rounded-xl font-black text-xs uppercase tracking-[0.2em] shadow-lg hover:bg-amber-500 transition-all mt-4">
-                    Buat Kelas Sekarang
-                </button>
+                <button type="submit" class="w-full bg-amber-400 text-slate-900 py-4 rounded-xl font-black text-xs uppercase tracking-[0.2em] shadow-lg hover:bg-amber-500 transition-all mt-4">Buat Kelas</button>
             </form>
+            @else
+            <form action="{{ route('kelas.storeJoin') }}" method="POST" class="p-8 space-y-5">
+                @csrf
+                <div class="space-y-2">
+                    <label class="text-[10px] font-black text-slate-500 uppercase ml-1">Kode Kelas</label>
+                    <input type="text" name="code" required placeholder="Masukkan 6 digit kode kelas" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-5 py-3 text-sm text-white focus:border-amber-400 outline-none transition-all uppercase">
+                </div>
+                <button type="submit" class="w-full bg-amber-400 text-slate-900 py-4 rounded-xl font-black text-xs uppercase tracking-[0.2em] shadow-lg hover:bg-amber-500 transition-all mt-4">Gabung Kelas</button>
+            </form>
+            @endif
         </div>
     </div>
 
     <script>
-        function openModal() { document.getElementById('actionModal').classList.remove('hidden'); }
-        function closeModal() { document.getElementById('actionModal').classList.add('hidden'); }
+        function openModal() {
+            document.getElementById('actionModal').classList.remove('hidden');
+        }
+
+        function closeModal() {
+            document.getElementById('actionModal').classList.add('hidden');
+        }
     </script>
 </body>
+
 </html>
