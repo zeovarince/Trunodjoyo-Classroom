@@ -6,6 +6,18 @@ use Illuminate\Http\Request;
 use App\Models\Assignment;
 use App\Models\Thread;
 use App\Models\Lpp;
+use App\Models\Notification;
+use App\Models\User;
+
+// ambil semua mahasiswa
+$users = User::where('role', 'mahasiswa')->get();
+
+foreach ($users as $user) {
+    Notification::create([
+        'user_id' => $user->id,
+        'message' => 'Materi baru telah diupload'
+    ]);
+}
 
 class LppController extends Controller
 {

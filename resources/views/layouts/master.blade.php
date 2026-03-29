@@ -20,6 +20,10 @@
         $themeBg = 'bg-amber-400';
         $themeBorder = 'border-amber-400/20';
     @endphp
+    $notifications = \App\Models\Notification::where('user_id', auth()->id())
+    ->latest()
+    ->take(5)
+    ->get();
 
     {{-- HEADER --}}
     <header class="fixed top-0 left-0 right-0 h-16 bg-slate-800 border-b border-slate-700 flex items-center justify-between px-6 z-50 shadow-sm">
