@@ -9,38 +9,44 @@ use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
-    // Menampilkan halaman login
+    // 1. Menampilkan Halaman Login
     public function showLoginForm()
     {
         return view('auth.login');
     }
 
-    // Proses login
+    // 2. Proses Login
     public function login(Request $request)
     {
+        // Validasi input
         $credentials = $request->validate([
             'email' => 'required|email',
             'password' => 'required'
         ]);
 
+        // Cek kecocokan di database
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
+            
+            // Jika berhasil, lempar ke dashboard
             return redirect()->intended('/');
         }
 
+        // Jika gagal, balik ke login dengan pesan error
         return back()->withErrors([
             'email' => 'Email atau password yang Anda masukkan salah.',
         ])->onlyInput('email');
     }
 
-    // Menampilkan halaman register
+    // 3. Menampilkan Halaman Register
     public function showRegisterForm()
     {
         return view('auth.register');
     }
 
-    // Proses register
-    public function register(Request $request){
+    // 4. Proses Register (Untuk User Baru)
+    public function register(Request $request)
+    {
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'npm' => 'required|string|unique:users', 
@@ -48,21 +54,30 @@ class AuthController extends Controller
             'password' => 'required|string|min:8|confirmed',
         ]);
 
-        // Simpan ke database
+        // Simpan ke database dengan role default 'mahasiswa'
         $user = User::create([
             'name' => $validated['name'],
             'email' => $validated['email'],
             'password' => Hash::make($validated['password']),
-            'npm' => $validated['npm'], 
+            'npm' => $validated['npm'],
+            'role' => 'mahasiswa', // Default role
+            'exp' => 0,            // Mulai dari 0 XP
+            'prodi' => 'Teknik Informatika',
+            'fakultas' => 'Teknik',
         ]);
+
+        // Langsung login setelah daftar
         Auth::login($user);
 
         return redirect('/');
     }
-    // Proses logout
+
+    // 5. Proses Logout (PENTING!)
     public function logout(Request $request)
     {
         Auth::logout();
+        
+        // Menghapus session agar aman
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
