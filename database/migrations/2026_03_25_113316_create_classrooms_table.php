@@ -13,9 +13,13 @@ return new class extends Migration
     {
         Schema::create('classrooms', function (Blueprint $table) {
             $table->id();
+            // Menghubungkan kelas dengan dosen yang membuatnya
             $table->foreignId('dosen_id')->constrained('users')->cascadeOnDelete();
-            $table->string('name');
-            $table->string('generate_code')->unique();
+            
+            $table->string('name');      // Nama Mata Kuliah
+            $table->string('section');   // Ruangan / Seksi (Tambahan baru)
+            $table->string('code')->unique(); // Kode unik untuk gabung kelas
+            
             $table->softDeletes();
             $table->timestamps();
         });

@@ -12,16 +12,13 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('archived_classrooms', function (Blueprint $table) {
-            $table->id();
-            $table->unsignedBigInteger('original_id');
-            $table->foreignId('dosen_id')->constrained('users')->cascadeOnDelete();
-            $table->string('name');
-            $table->string('generate_code');
-            $table->dateTime('deleted_at');
-            $table->timestamps();
-
-            $table->index('original_id');
-        });
+    $table->id();
+    $table->unsignedBigInteger('original_id');
+    $table->foreignId('dosen_id')->constrained('users');
+    $table->string('name');
+    $table->string('code'); // Ubah dari generate_code ke code
+    $table->timestamp('deleted_at');
+});
     }
 
     /**

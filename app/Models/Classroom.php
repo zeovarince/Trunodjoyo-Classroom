@@ -4,14 +4,29 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Classroom extends Model
 {
-    // aktif soft delete
-    use SoftDeletes;
+    use HasFactory, SoftDeletes;
 
-    // Relasi ke model Lpp one to many
-    public function lpps(){
+    // Daftarkan kolom agar bisa diisi (Mass Assignment)
+    protected $fillable = [
+        'dosen_id',
+        'name',
+        'section',
+        'code'
+    ];
+
+    // Relasi ke Dosen (User)
+    public function dosen()
+    {
+        return $this->belongsTo(User::class, 'dosen_id');
+    }
+
+    // Relasi ke Lpp
+    public function lpps()
+    {
         return $this->hasMany(Lpp::class);
     }
 }

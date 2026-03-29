@@ -12,7 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('classrooms', function (Blueprint $table) {
-            $table->unsignedInteger('total_students')->default(0)->after('generate_code');
+            // Kita ganti 'after' nya ke 'code' karena tadi sudah kita ubah namanya
+            $table->integer('total_students')->unsigned()->default(0)->after('code');
         });
     }
 
