@@ -8,6 +8,9 @@ use Illuminate\Support\Facades\DB;
 
 class DatabaseSeeder extends Seeder
 {
+    /**
+     * Seed the application's database.
+     */
     public function run(): void
     {
         // ================= USERS =================
@@ -16,7 +19,7 @@ class DatabaseSeeder extends Seeder
         User::create([
             'name' => 'Dr. Rifqi Fairurrafi',
             'email' => 'dosen@trunojoyo.ac.id',
-            'password' => bcrypt('dosen123'),
+            'password' => bcrypt('dosen123'), // Pastikan pakai bcrypt()
             'fakultas' => 'Teknik',
             'prodi' => 'Teknik Informatika',
             'role' => 'dosen',

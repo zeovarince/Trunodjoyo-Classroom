@@ -1,44 +1,21 @@
 <?php
 
-use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\KelasController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\LppController;
-use App\Http\Controllers\ThreadController;
 
 // 1. Default route diarahkan ke login
 Route::get('/', function () {
     return redirect('/login');
 });
 
-// -----------------------------------------------------------------------------
-// 2. ROUTE MILIK TEMANMU (Sekarang dikunci, wajib login agar bisa masuk)
-// -----------------------------------------------------------------------------
-Route::middleware(['auth', 'verified'])->group(function () {
-    Route::get('/dashboard', function () {
-        return view('dashboard');
-    })->name('dashboard');
-
-    Route::get('/tugas', function () {
-        return view('tugas');
-    })->name('tugas');
-
-    Route::get('/detail-kelas', function () {
-        return view('detail_kelas');
-    })->name('detail_kelas');
-
-    Route::get('/anggota-kelas', function () {
-        return view('anggota_kelas');
-    })->name('anggota_kelas');
-
-    Route::get('/pengumpulan-tugas', function () {
-        return view('pengumpulan_tugas');
-    })->name('pengumpulan_tugas');
+// 1. GUEST ONLY (Hanya untuk yang belum login)
+Route::middleware('guest')->group(function () {
+    Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
+    Route::post('/login', [AuthController::class, 'login']);
+    Route::get('/register', [AuthController::class, 'showRegisterForm'])->name('register');
+    Route::post('/register', [AuthController::class, 'register']);
 });
 
-// -----------------------------------------------------------------------------
-// 3. ROUTE PROFILE (Bawaan sistem Auth milikmu)
-// -----------------------------------------------------------------------------
+// 2. AUTH ONLY (Wajib login)
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
@@ -62,11 +39,4 @@ Route::middleware(['auth'])->group(function () {
     // Mahasiswa
     Route::get('/kelas-join', [KelasController::class, 'join'])->name('kelas.join');
     Route::post('/kelas-join', [KelasController::class, 'storeJoin'])->name('kelas.storeJoin');
-
-    // ================== LPP ==================
-    Route::get('/lpp/{id}', [LppController::class, 'show'])->name('lpp.show');
-    Route::post('/thread', [ThreadController::class, 'store'])->name('thread.store');
 });
-
-// 5. Memanggil route Auth Breeze
-require __DIR__.'/auth.php';
