@@ -13,18 +13,9 @@ return new class extends Migration
     {
         Schema::create('classrooms', function (Blueprint $table) {
             $table->id();
-            
-            // --- KOLOM MILIK TEMANMU (Wajib ada agar fitur miliknya aman) ---
             $table->foreignId('dosen_id')->constrained('users')->cascadeOnDelete();
             $table->string('name');
             $table->string('generate_code')->unique();
-
-            // --- TAMBAHAN KOLOM MILIKMU (Agar CRUD kelasmu bisa menyimpan data) ---
-            $table->foreignId('user_id')->nullable()->constrained('users')->cascadeOnDelete();
-            $table->string('nama')->nullable(); 
-            $table->string('kode')->nullable(); 
-            $table->enum('role', ['dosen','mahasiswa'])->nullable();
-
             $table->softDeletes();
             $table->timestamps();
         });

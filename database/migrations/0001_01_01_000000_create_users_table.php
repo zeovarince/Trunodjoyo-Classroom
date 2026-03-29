@@ -22,10 +22,7 @@ return new class extends Migration
             $table->rememberToken();
             $table->timestamps();
             $table->string('npm')->unique()->nullable()->comment('NPM untuk Mahasiswa, NIP untuk Dosen');
-            
-            // Ini sudah aku gabung punya temanmu dan punyamu (ada tambahan 'admin')
-            $table->enum('role', ['admin', 'dosen', 'mahasiswa'])->default('mahasiswa');
-            
+            $table->enum('role', ['mahasiswa', 'dosen'])->default('mahasiswa');
             $table->integer('exp')->default(0)->comment('EXP');
             $table->string('avatar')->nullable()->comment('foto profil');
         });
