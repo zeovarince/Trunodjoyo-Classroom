@@ -15,16 +15,15 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('email')->unique();
-            $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->string('fakultas')->nullable();
             $table->string('prodi')->nullable();
-            $table->rememberToken();
             $table->timestamps();
             $table->string('npm')->unique()->nullable()->comment('NPM untuk Mahasiswa, NIP untuk Dosen');
             $table->enum('role', ['mahasiswa', 'dosen'])->default('mahasiswa');
             $table->integer('exp')->default(0)->comment('EXP');
             $table->string('avatar')->nullable()->comment('foto profil');
+            $table->softDeletes();
         });
 
         Schema::create('password_reset_tokens', function (Blueprint $table) {

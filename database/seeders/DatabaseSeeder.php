@@ -49,12 +49,12 @@ class DatabaseSeeder extends Seeder
         ]);
         User::create([
             'name' => 'M. Zaidan Nabil Rafi',
-            'email' => ' 240411100068@student.trunojoyo.ac.id',
+            'email' => '240411100068@student.trunojoyo.ac.id',
             'password' => bcrypt('zaidan123'),
             'fakultas' => 'Teknik',
             'prodi' => 'Teknik Informatika',
             'role' => 'mahasiswa',
-            'npm' => ' 240411100068',
+            'npm' => '240411100068',
             'exp' => 250,
 
         ]);
@@ -71,7 +71,7 @@ class DatabaseSeeder extends Seeder
         ]);
         User::create([
             'name' => 'Verdy Setiyawan',
-            'email' => '2404111000100@student.trunojoyo.ac.id',
+            'email' => '240411100100@student.trunojoyo.ac.id',
             'password' => bcrypt('perdi123'),
             'fakultas' => 'Teknik',
             'prodi' => 'Teknik Informatika',
