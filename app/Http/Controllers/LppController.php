@@ -102,5 +102,21 @@ class LppController extends Controller
         $lpp->delete();
 
         return back()->with('success', 'Materi berhasil dihapus!');
-    }
+    }public function upload(Request $request)
+{
+    $request->validate([
+        'file' => 'required|file|mimes:pdf,doc,docx|max:2048',
+        'lpp_id' => 'required'
+    ]);
+
+    $file = $request->file('file');
+    $path = $file->store('uploads', 'public');
+
+    $lpp = Lpp::findOrFail($request->lpp_id);
+
+    // kalau mau simpan ke database, bisa tambah tabel submissions nanti
+
+    return redirect('/kelas/' . $lpp->classroom_id)
+        ->with('success', 'Tugas berhasil diupload!');
+}
 }

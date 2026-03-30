@@ -13,106 +13,71 @@
         {{ $lpp->description }}
     </p>
 
-    @if($lpp->file_path)
-        <a href="{{ asset($lpp->file_path) }}" target="_blank"
-           class="inline-block px-4 py-2 bg-green-500 text-black rounded font-bold">
-             Lihat Materi
-        </a>
-    @endif
 </div>
 
-    <!-- ================== TUGAS ================== -->
-    <div class="bg-[#1E293B] p-6 rounded-xl shadow mb-6">
-        <h2 class="text-xl font-bold text-[#FBBF24] mb-4">
-            📝 Tugas
-        </h2>
+{{-- ================== UPLOAD FILE ================== --}}
+<div class="bg-[#1E293B] p-6 rounded-xl shadow mb-6">
+    <h2 class="text-lg font-bold text-[#FBBF24] mb-3">
+        📤 Upload Tugas
+    </h2>
 
-        @forelse($assignments as $a)
-            <div class="border-b border-slate-700 py-3">
-                <h4 class="font-semibold text-white">{{ $a->title }}</h4>
-                <p class="text-slate-400 text-sm">{{ $a->description }}</p>
-                <small class="text-[#FBBF24]">
-                    Deadline: {{ $a->deadline }}
-                </small>
-            </div>
-        @empty
-            <p class="text-slate-400">Belum ada tugas.</p>
-        @endforelse
-    </div>
-@if($lpp->file_path)
-    <div class="bg-[#1E293B] p-4 rounded-xl mb-6">
-        <h2 class="text-lg font-bold text-[#FBBF24] mb-3">📄 Materi</h2>
-
-        <iframe 
-            src="{{ asset('storage/' . $lpp->file_path) }}" 
-            width="100%" 
-            height="500px"
-            class="rounded border border-slate-700">
-        </iframe>
-
-        <a href="{{ asset('storage/' . $lpp->file_path) }}" 
-           target="_blank"
-           class="inline-block mt-3 px-4 py-2 bg-blue-500 text-white rounded">
-            Buka
-        </a>
-    </div>
-@endif
-    <!-- ================== DISKUSI ================== -->
-    <div class="bg-[#1E293B] p-6 rounded-xl shadow">
-        <h2 class="text-xl font-bold text-[#FBBF24] mb-4">
-            💬 Diskusi
-        </h2>
-
-        <!-- FORM DISKUSI -->
-
-<form method="POST" action="{{ route('thread.store') }}" class="mb-4">
-    @csrf
-
-    <input type="hidden" name="lpp_id" value="{{ $lpp->id }}">
-
-    <textarea 
-        name="content"
-        class="w-full p-3 rounded bg-[#0F172A] border border-slate-700 text-white"
-        placeholder="Tulis diskusi..."
-        required
-    ></textarea>
-
-    <button 
-        class="mt-2 px-4 py-2 bg-yellow-400 text-black rounded font-bold">
-        Kirim
-    </button>
-</form>
-@if(auth()->user()->role === 'dosen')
-    <h2 class="text-xl font-bold text-[#FBBF24] mb-4">📄 Upload Materi</h2>
-
-    <form method="POST" action="{{ route('lpp.upload') }}" enctype="multipart/form-data">
+    <form action="{{ route('lpp.upload') }}" method="POST" enctype="multipart/form-data">
         @csrf
 
         <input type="hidden" name="lpp_id" value="{{ $lpp->id }}">
 
-        <input type="file" name="file" class="mb-2 text-white">
+        <input 
+            type="file" 
+            name="file" 
+            required
+            class="w-full p-2 bg-[#0F172A] border border-slate-700 rounded text-white"
+        >
 
-        <button class="px-4 py-2 bg-green-500 text-black rounded font-bold">
+        <button class="mt-3 px-4 py-2 bg-blue-500 text-white rounded font-bold">
             Upload
         </button>
     </form>
-@endif
-        <!-- LIST THREAD -->
-        @forelse($threads as $t)
-            <div class="border-b border-slate-700 py-3">
-                <p class="text-sm font-bold text-[#FBBF24]">
-                    {{ $t->user->name ?? 'User' }}
-                </p>
-                <p class="text-white">{{ $t->content }}</p>
-                <small class="text-slate-400 text-xs">
-                    {{ $t->created_at }}
-                </small>
-            </div>
-        @empty
-            <p class="text-slate-400">Belum ada diskusi.</p>
-        @endforelse
+</div>
 
-    </div>
+<!-- ================== DISKUSI ================== -->
+<div class="bg-[#1E293B] p-6 rounded-xl shadow">
+    <h2 class="text-xl font-bold text-[#FBBF24] mb-4">
+        💬 Diskusi
+    </h2>
+
+    <form method="POST" action="{{ route('thread.store') }}" class="mb-4">
+        @csrf
+
+        <input type="hidden" name="lpp_id" value="{{ $lpp->id }}">
+
+        <textarea 
+            name="content"
+            class="w-full p-3 rounded bg-[#0F172A] border border-slate-700 text-white"
+            placeholder="Tulis diskusi..."
+            required
+        ></textarea>
+
+        <button 
+            class="mt-2 px-4 py-2 bg-yellow-400 text-black rounded font-bold">
+            Kirim
+        </button>
+    </form>
+
+    <!-- LIST THREAD -->
+    @forelse($threads as $t)
+        <div class="border-b border-slate-700 py-3">
+            <p class="text-sm font-bold text-[#FBBF24]">
+                {{ $t->user->name ?? 'User' }}
+            </p>
+            <p class="text-white">{{ $t->content }}</p>
+            <small class="text-slate-400 text-xs">
+                {{ $t->created_at }}
+            </small>
+        </div>
+    @empty
+        <p class="text-slate-400">Belum ada diskusi.</p>
+    @endforelse
 
 </div>
+
 @endsection

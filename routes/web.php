@@ -87,5 +87,6 @@ Route::middleware('auth')->group(function () {
     Route::get('/kelas/{id}/edit', [ClassroomController::class, 'edit'])->name('kelas.edit');
     Route::put('/kelas/{id}', [ClassroomController::class, 'update'])->name('kelas.update');
     Route::delete('/kelas/{id}', [ClassroomController::class, 'destroy'])->name('kelas.destroy');
+        Route::post('/lpp/upload', [LppController::class, 'upload'])->name('lpp.upload');
 
 });
