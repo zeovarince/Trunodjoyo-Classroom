@@ -8,6 +8,7 @@ use App\Models\Thread;
 use App\Models\Lpp;
 use App\Models\Notification;
 use App\Models\User;
+use App\Models\Submission; // 🔥 TAMBAHAN
 use Illuminate\Support\Facades\Storage;
 
 class LppController extends Controller
@@ -15,7 +16,9 @@ class LppController extends Controller
     // ================== TAMPILKAN LPP ==================
     public function show($id)
     {
-        $lpp = Lpp::findOrFail($id);
+        // 🔥 TAMBAHAN eager loading submissions
+        $lpp = Lpp::with(['submissions.user'])->findOrFail($id);
+
         $assignments = Assignment::where('lpp_id', $id)->get();
         $threads = Thread::where('lpp_id', $id)->latest()->get();
         $notifications = Notification::where('user_id', auth()->id())->latest()->get();
@@ -32,7 +35,7 @@ class LppController extends Controller
             'classroom_id' => 'required',
             'title' => 'required',
             'description' => 'required',
-            'file' => 'nullable|mimes:pdf|max:2048' // Maks 2MB
+            'file' => 'nullable|mimes:pdf|max:2048'
         ]);
 
         $lpp = new Lpp();
@@ -74,11 +77,9 @@ class LppController extends Controller
         $lpp->description = $request->description;
 
         if ($request->hasFile('file')) {
-            // Hapus file lama jika ada
             if ($lpp->file_path) {
                 Storage::disk('public')->delete($lpp->file_path);
             }
-            // Simpan file baru
             $lpp->file_path = $request->file('file')->store('materi', 'public');
         }
 
@@ -94,7 +95,6 @@ class LppController extends Controller
 
         $lpp = Lpp::findOrFail($id);
         
-        // Hapus file fisik dari storage
         if ($lpp->file_path) {
             Storage::disk('public')->delete($lpp->file_path);
         }
@@ -102,21 +102,25 @@ class LppController extends Controller
         $lpp->delete();
 
         return back()->with('success', 'Materi berhasil dihapus!');
-    }public function upload(Request $request)
-{
-    $request->validate([
-        'file' => 'required|file|mimes:pdf,doc,docx|max:2048',
-        'lpp_id' => 'required'
-    ]);
+    }
 
-    $file = $request->file('file');
-    $path = $file->store('uploads', 'public');
+    // ================== UPLOAD TUGAS MAHASISWA ==================
+    public function upload(Request $request)
+    {
+        $request->validate([
+            'file' => 'required|file|mimes:pdf,doc,docx|max:2048',
+            'lpp_id' => 'required'
+        ]);
 
-    $lpp = Lpp::findOrFail($request->lpp_id);
+        $path = $request->file('file')->store('submissions', 'public');
 
-    // kalau mau simpan ke database, bisa tambah tabel submissions nanti
+        // 🔥 SIMPAN KE DATABASE
+        Submission::create([
+            'lpp_id' => $request->lpp_id,
+            'user_id' => auth()->id(),
+            'file_path' => $path
+        ]);
 
-    return redirect('/kelas/' . $lpp->classroom_id)
-        ->with('success', 'Tugas berhasil diupload!');
-}
+        return back()->with('success', 'Tugas berhasil dikumpulkan!');
+    }
 }

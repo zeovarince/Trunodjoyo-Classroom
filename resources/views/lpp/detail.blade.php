@@ -4,6 +4,37 @@
 
 @section('content')
 
+@php
+    $isDosen = Auth::user()->role == 'dosen';
+@endphp
+
+@if($isDosen)
+<div class="bg-[#1E293B] p-6 rounded-xl shadow mb-6">
+    <h2 class="text-lg font-bold text-[#FBBF24] mb-4">
+        📥 Tugas Mahasiswa
+    </h2>
+
+    @forelse($lpp->submissions as $s)
+        <div class="border-b border-slate-700 py-3">
+            <p class="text-sm font-bold text-yellow-400">
+                {{ $s->user->name }}
+            </p>
+
+            <a href="{{ asset('storage/' . $s->file_path) }}" target="_blank"
+               class="text-blue-400 underline text-sm">
+                Download File
+            </a>
+
+            <small class="block text-slate-400 text-xs">
+                {{ $s->created_at }}
+            </small>
+        </div>
+    @empty
+        <p class="text-slate-400 text-sm">Belum ada yang mengumpulkan.</p>
+    @endforelse
+</div>
+@endif
+
 <div class="bg-[#1E293B] p-6 rounded-xl shadow mb-6">
     <h1 class="text-2xl font-bold text-[#FBBF24] mb-2">
         {{ $lpp->title }}
