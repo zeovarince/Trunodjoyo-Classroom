@@ -4,18 +4,6 @@
 
 @section('content')
 
-<div class="relative">
-    <button>🔔</button>
-
-    <div class="absolute bg-white text-black p-3 rounded">
-        @forelse($notifications as $notif)
-            <p>{{ $notif->message }}</p>
-        @empty
-            <p>Tidak ada notifikasi</p>
-        @endforelse
-    </div>
-</div>
-
 <div class="bg-[#1E293B] p-6 rounded-xl shadow mb-6">
     <h1 class="text-2xl font-bold text-[#FBBF24] mb-2">
         {{ $lpp->title }}
