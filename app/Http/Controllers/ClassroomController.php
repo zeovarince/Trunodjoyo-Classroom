@@ -15,15 +15,16 @@ class ClassroomController extends Controller
         $user = Auth::user();
 
         if ($user->role == 'dosen') {
-            // Dosen hanya melihat kelas yang mereka buat sendiri
             $classrooms = Classroom::where('dosen_id', $user->id)
+                ->withCount('students')
                 ->latest()
                 ->get();
         } else {
-            // Mahasiswa melihat kelas yang mereka ikuti
-            $classrooms = Classroom::latest()->get();
-        }
-
+            $classrooms = $user->joinedClassrooms()
+            ->withCount('students')
+            ->latest()
+            ->get();
+    }
         return view('dashboard', compact('classrooms'));
     }
     // Menampilkan form untuk membuat kelas baru (Dosen)
