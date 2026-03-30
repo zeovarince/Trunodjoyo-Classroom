@@ -33,6 +33,9 @@
     $themeText = 'text-amber-400';
     $themeBg = 'bg-amber-400';
     $themeBorder = 'border-amber-400/20';
+    $headerAvatar = $user->avatar ? route('profile.avatar', $user->id) : 'https://ui-avatars.com/api/?name='.urlencode($user->name).'&background=FBBF24&color=0F172A&size=128&bold=true';
+    $studentLevel = min(5, intdiv(max(0, min(500, (int) $user->exp)), 100) + 1);
+    $studentFrameImage = asset('images/lv'.$studentLevel.'.png');
 
     $sidebarClassrooms = $isDosen ? $user->taughtClassrooms : $user->joinedClassrooms;
     $currentPath = Request::path();
@@ -71,18 +74,27 @@
                 <button onclick="openModal()" class="{{ $themeBg }} text-slate-900 px-4 py-2 rounded-xl font-black hover:opacity-90 transition-all text-xs uppercase tracking-wider shadow-lg flex items-center gap-2">
                     <span>{{ $isDosen ? 'Buat Kelas' : 'Gabung Kelas' }}</span>
                 </button>
-                <a href="/profile" class="flex items-center gap-3 hover:bg-slate-700/50 p-2 rounded-xl transition-all cursor-pointer">
-                    <div class="w-10 h-10 rounded-full border border-amber-400 flex items-center justify-center bg-slate-800 text-amber-400 font-bold text-xs shadow-inner">
-                        {{ strtoupper(substr($user->name, 0, 2)) }}
-                    </div>
-                    <div class="hidden sm:block overflow-hidden">
-                        <p class="text-sm font-bold text-white leading-none truncate">{{ $user->name }}</p>
-                        <p class="text-slate-500 text-xs italic">{{ ucfirst($user->role) }}</p>
-                    </div>
-                    <p class="text-[9px] text-amber-400 uppercase tracking-widest font-mono">Lihat Profil</p>
+                @if($isDosen)
+                    <a href="{{ route('profile.show') }}" class="hidden md:flex items-center gap-4 rounded-full border border-slate-600 bg-black/40 px-4 py-2 hover:border-slate-500 transition-all">
+                        <img src="{{ asset('images/dosen.png') }}" alt="Dosen" class="h-10 w-auto object-contain rounded-lg bg-white/90 px-2 py-1">
+                        <div class="w-12 h-12 rounded-full border-2 border-slate-300 overflow-hidden">
+                            <img src="{{ $headerAvatar }}" alt="{{ $user->name }}" class="w-full h-full object-cover">
+                        </div>
+                    </a>
+                @else
+                    <a href="{{ route('profile.show') }}" class="flex items-center gap-3 hover:bg-slate-700/50 p-2 rounded-xl transition-all cursor-pointer">
+                        <div class="relative w-11 h-11">
+                            <img src="{{ $headerAvatar }}" alt="{{ $user->name }}" class="w-11 h-11 rounded-full object-cover relative z-[1]">
+                            <img src="{{ $studentFrameImage }}" alt="Frame Level {{ $studentLevel }}" class="absolute inset-0 w-11 h-11 object-contain scale-[1.2] pointer-events-none z-[2]">
+                        </div>
+                        <div class="hidden sm:block overflow-hidden">
+                            <p class="text-sm font-bold text-white leading-none truncate">{{ $user->name }}</p>
+                            <p class="text-slate-500 text-xs italic">{{ ucfirst($user->role) }}</p>
+                        </div>
+                        <p class="hidden xl:block text-[9px] text-amber-400 uppercase tracking-widest font-mono">Lihat Profil</p>
+                    </a>
+                @endif
             </div>
-            </a>
-        </div>
         </div>
     </header>
 
@@ -112,8 +124,8 @@
 
             <div class="px-6 mt-8 mb-4 text-[10px] font-black text-slate-500 uppercase tracking-[0.2em]">Mata Kuliah Anda</div>
             <ul class="space-y-1 px-3">
-                @isset($classrooms)
-                @foreach($classrooms as $sidebarKelas)
+                @if($sidebarClassrooms && $sidebarClassrooms->count() > 0)
+                @foreach($sidebarClassrooms as $sidebarKelas)
                 <li>
                     <a href="/kelas/{{ $sidebarKelas->id }}"
                         class="flex items-center gap-3 px-4 py-2 rounded-xl text-xs transition-all group 
@@ -129,8 +141,8 @@
                 </li>
                 @endforeach
                 @else
-                <li class="px-4 py-2 text-[10px] text-slate-600 italic">Memuat kelas...</li>
-                @endisset
+                <li class="px-4 py-2 text-[10px] text-slate-600 italic">Belum ada kelas.</li>
+                @endif
             </ul>
         </nav>
     </aside>

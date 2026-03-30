@@ -75,7 +75,7 @@
                         </span>
                     </td>
                     <td class="px-6 py-4 text-right">
-                        <a href="/tugas/{{ $tugas->id }}" class="text-amber-400 hover:text-amber-300 text-sm font-bold underline decoration-2 underline-offset-4">Kerjakan</a>
+                        <a href="{{ route('tugas.detail', $tugas->id) }}" class="text-amber-400 hover:text-amber-300 text-sm font-bold underline decoration-2 underline-offset-4">Kerjakan</a>
                     </td>
                 </tr>
                 @empty
@@ -95,7 +95,7 @@
                         </span>
                     </td>
                     <td class="px-6 py-4 text-right">
-                        <a href="/tugas/{{ $tugas->id }}" class="text-red-400 hover:text-red-300 text-sm font-bold underline decoration-2 underline-offset-4">Tetap Kerjakan</a>
+                        <a href="{{ route('tugas.detail', $tugas->id) }}" class="text-red-400 hover:text-red-300 text-sm font-bold underline decoration-2 underline-offset-4">Tetap Kerjakan</a>
                     </td>
                 </tr>
                 @empty
@@ -115,7 +115,7 @@
                         </span>
                     </td>
                     <td class="px-6 py-4 text-right">
-                        <a href="/tugas/{{ $tugas->id }}" class="text-slate-400 hover:text-white text-sm font-bold underline decoration-2 underline-offset-4">Lihat Detail</a>
+                        <a href="{{ route('tugas.detail', $tugas->id) }}" class="text-slate-400 hover:text-white text-sm font-bold underline decoration-2 underline-offset-4">Lihat Detail</a>
                     </td>
                 </tr>
                 @empty

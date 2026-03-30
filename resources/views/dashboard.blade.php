@@ -106,6 +106,19 @@ $themeBtnHover = 'group-hover:bg-amber-400';
         </div>
     </div>
     @endforeach
+    <button onclick="openModal()" class="group relative bg-slate-800/30 border-2 border-dashed border-slate-700 hover:border-amber-400 rounded-3xl overflow-hidden transition-all duration-300 flex flex-col items-center justify-center min-h-[260px] cursor-pointer">
+        <div class="w-16 h-16 rounded-full bg-slate-900 border border-slate-700 flex items-center justify-center text-slate-500 group-hover:text-slate-900 group-hover:bg-amber-400 group-hover:border-amber-400 transition-all mb-4 shadow-lg">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+            </svg>
+        </div>
+        <h2 class="text-slate-400 group-hover:text-amber-400 font-bold text-lg transition-all">
+            {{ $isDosen ? 'Buat Kelas Baru' : 'Gabung Kelas Baru' }}
+        </h2>
+        <p class="text-slate-500 text-xs mt-2 px-8 text-center transition-all group-hover:text-slate-400">
+            {{ $isDosen ? 'Buat ruang kelas baru untuk membagikan materi dan tugas ke mahasiswa.' : 'Masukkan 6 digit kode dari dosen untuk bergabung ke dalam kelas.' }}
+        </p>
+    </button>
 </div>
 
 @if($isDosen)

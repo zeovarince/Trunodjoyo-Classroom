@@ -16,8 +16,7 @@ class User extends Authenticatable
 
     // relasi ke model Submission one to many
     public function submissions(){
-    // karena di tabel submission nama foreign key nya student_id, maka kita tambahkan parameter kedua di method hasMany nya
-        return $this->hasMany(Submission::class, 'student_id');
+        return $this->hasMany(Submission::class, 'user_id');
     }
     // relasi ke model Classroom one to many Satu dosen bisa membuat dan mengajar banyak kelas.
     public function taughtClassrooms(){

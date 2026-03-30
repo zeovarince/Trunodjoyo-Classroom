@@ -12,6 +12,7 @@ class ClassroomController extends Controller
     // menampilkan daftar kelas yang dibuat dosen atau diikuti mahasiswa
     public function index()
     {
+        /** @var \App\Models\User $user */
         $user = Auth::user();
 
         if ($user->role == 'dosen') {
@@ -52,17 +53,47 @@ class ClassroomController extends Controller
 
     public function show($id)
     {
+        /** @var \App\Models\User $user */
         $user = Auth::user();
-        $classroom = Classroom::findOrFail($id);
+        $classroom = Classroom::with(['dosen', 'students'])->findOrFail($id);
+
+        if ($user->role === 'dosen') {
+            abort_unless($classroom->dosen_id === $user->id, 403);
+        } else {
+            abort_unless($user->joinedClassrooms()->where('classrooms.id', $classroom->id)->exists(), 403);
+        }
 
         // Ambil semua kelas agar Sidebar tidak kosong
         if ($user->role == 'dosen') {
             $classrooms = Classroom::where('dosen_id', $user->id)->latest()->get();
         } else {
-            $classrooms = Classroom::latest()->get();
+            $classrooms = $user->joinedClassrooms()->latest()->get();
         }
 
-        return view('detail_kelas', compact('classroom', 'classrooms'));
+        $forumPostsQuery = $classroom->lpps()->with(['attachments', 'submissions', 'assignments'])->latest();
+        if ($user->role !== 'dosen') {
+            $forumPostsQuery->visibleForStudent();
+        }
+        $forumPosts = $forumPostsQuery->get();
+
+        $tasksQuery = $classroom->lpps()
+            ->with(['attachments', 'submissions', 'assignments'])
+            ->where('type', 'assignment')
+            ->orderBy('deadline', 'asc');
+        if ($user->role !== 'dosen') {
+            $tasksQuery->visibleForStudent();
+        }
+        $tasks = $tasksQuery->get();
+        $tasksByTopic = $tasks->groupBy(function ($task) {
+            return $task->topic ?: 'Tanpa Topik';
+        });
+
+        $tab = request('tab', 'forum');
+        if (!in_array($tab, ['forum', 'tugas', 'orang'])) {
+            $tab = 'forum';
+        }
+
+        return view('detail_kelas', compact('classroom', 'classrooms', 'forumPosts', 'tasksByTopic', 'tab'));
     }
     // Menampilkan form untuk mengedit kelas (Dosen)
     public function edit($id)
@@ -135,6 +166,7 @@ class ClassroomController extends Controller
         if (!$classroom) {
             return redirect()->back()->with('error', 'Kode kelas tidak valid atau tidak ditemukan!');
         }
+        /** @var \App\Models\User $user */
         $user = Auth::user();
         if ($user->joinedClassrooms()->where('classroom_id', $classroom->id)->exists()) {
             return redirect()->back()->with('error', 'Kamu sudah bergabung di kelas ini!');
