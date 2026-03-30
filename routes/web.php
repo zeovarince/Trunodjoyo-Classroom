@@ -7,28 +7,40 @@ use App\Http\Controllers\ClassroomController;
 use App\Http\Controllers\LppController;
 use App\Http\Controllers\ThreadController;
 
-Route::post('/thread', [ThreadController::class, 'store'])->name('thread.store');
-
 // ================== ROOT ==================
 Route::get('/', function () {
     return Auth::check() ? redirect('/kelas') : redirect('/login');
 });
 
-// ================== GUEST ==================
+// ================== GUEST (Belum Login) ==================
 Route::middleware('guest')->group(function () {
     Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
     Route::post('/login', [AuthController::class, 'login']);
     Route::get('/register', [AuthController::class, 'showRegisterForm'])->name('register');
     Route::post('/register', [AuthController::class, 'register']);
 });
+
+// ================== AUTHENTICATED ROUTES (Sudah Login) ==================
 Route::middleware('auth')->group(function () {
-    // Logout
+    
+    // Logout & Profile
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
-    // Halaman Tugas
+    Route::get('/profile', function () {
+        return view('profile');
+    });
+
+    // ================== LPP & THREAD ==================
+    Route::post('/lpp', [LppController::class, 'store'])->name('lpp.store');
+    Route::put('/lpp/{id}', [LppController::class, 'update'])->name('lpp.update');
+    Route::delete('/lpp/{id}', [LppController::class, 'destroy'])->name('lpp.destroy');
+    Route::get('/lpp/{id}', [LppController::class, 'show'])->name('lpp.show');
+    
+    Route::post('/thread', [ThreadController::class, 'store'])->name('thread.store');
+
+    // ================== HALAMAN TUGAS ==================
     Route::get('/tugas', function () {
         $user = Auth::user();
         
-        // 1. Ambil ID kelas DAN daftar kelas untuk Sidebar
         if ($user->role == 'dosen') {
             $classroomIds = $user->taughtClassrooms()->pluck('classrooms.id');
             $classrooms = \App\Models\Classroom::where('dosen_id', $user->id)->latest()->get();
@@ -37,7 +49,6 @@ Route::middleware('auth')->group(function () {
             $classrooms = \App\Models\Classroom::latest()->get();
         }
 
-        // 2. Ambil data tugas beserta status pengumpulan
         $assignments = \App\Models\Assignment::with(['lpp.classroom', 'submissions' => function($q) use ($user) {
             $q->where('student_id', $user->id); 
         }])
@@ -47,7 +58,6 @@ Route::middleware('auth')->group(function () {
         ->orderBy('deadline', 'asc')
         ->get();
 
-        // 3. Pisahkan ke 3 kategori
         $ditugaskan = collect();
         $belumDiserahkan = collect();
         $selesai = collect();
@@ -66,6 +76,8 @@ Route::middleware('auth')->group(function () {
         }
         return view('tugas', compact('ditugaskan', 'belumDiserahkan', 'selesai', 'classrooms')); 
     })->name('tugas');    
+    
+    // ================== KELAS ==================
     Route::get('/kelas', [ClassroomController::class, 'index'])->name('kelas.index');
     Route::get('/kelas/create', [ClassroomController::class, 'create'])->name('kelas.create');
     Route::post('/kelas', [ClassroomController::class, 'store'])->name('kelas.store');
@@ -75,13 +87,5 @@ Route::middleware('auth')->group(function () {
     Route::get('/kelas/{id}/edit', [ClassroomController::class, 'edit'])->name('kelas.edit');
     Route::put('/kelas/{id}', [ClassroomController::class, 'update'])->name('kelas.update');
     Route::delete('/kelas/{id}', [ClassroomController::class, 'destroy'])->name('kelas.destroy');
+
 });
-
-    // Profile
-    Route::get('/profile', function () {
-        return view('profile');
-    });
-
-    // ================== LPP ==================
-    Route::get('/lpp/{id}', [LppController::class, 'show'])->name('lpp.show');
-    Route::post('/lpp/upload', [LppController::class, 'upload'])->name('lpp.upload');
